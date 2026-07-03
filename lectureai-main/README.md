@@ -1,24 +1,113 @@
-**LectureAI standalone project**
+# Lec Vid Generator (LectureAI)
 
-**About**
+A standalone React + Vite app that turns uploaded lecture notes into cinematic, scene-based lesson reels.
 
-This app now runs as a local Vite project with no external backend entities or auth setup required.
+This version is fully local-first:
+- No external app backend is required.
+- No external entity/auth provider is required.
+- Data is stored in browser localStorage.
+- Lesson generation uses an in-app mock pipeline that creates structured scenes, images, and video placeholders.
 
-It stores projects in browser local storage and generates placeholder lesson scenes locally so you can run it immediately in VS Code.
+## What the app does
 
-**Edit the code in your local development environment**
+1. Upload lecture content from the Home page.
+2. Create a project and track progress (extracting -> generating -> ready).
+3. Auto-generate scenes containing:
+	 - title
+	 - narration
+	 - formula
+	 - derivation steps
+	 - key points
+	 - image prompt
+4. Render visual assets for each scene (local SVG data URLs).
+5. Browse all projects in Dashboard.
+6. Open a project page to replay scenes and regenerate/restyle content.
 
-Any change you make in the repo is enough to update the standalone app.
+## Tech stack
 
-**Prerequisites:** 
+- React 18
+- Vite 6
+- React Router 6
+- TanStack Query 5
+- Tailwind CSS
+- Framer Motion
+- Radix UI components
 
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Run the app: `npm run dev`
+## Project routes
 
-**Notes**
+- / -> Home
+- /dashboard -> Project library
+- /project/:id -> Scene player and generation workflow
 
-- Projects persist in local storage in the browser.
-- The app seeds a sample lesson so the dashboard is not empty on first launch.
-- Uploaded text files are read locally; other file types use generated lesson summaries.
+## Local data model
+
+The local client is in src/api/standaloneClient.js and persists data using these keys:
+
+- lectureai_projects_v1
+- lectureai_uploads_v1
+- lectureai_user_v1
+
+On first run, a seeded sample project is created so the dashboard is not empty.
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 18+ recommended
+- npm
+
+### Install
+
+```bash
+npm install
+```
+
+### Run development server
+
+```bash
+npm run dev
+```
+
+### Build for production
+
+```bash
+npm run build
+```
+
+### Preview production build
+
+```bash
+npm run preview
+```
+
+## Available scripts
+
+- npm run dev -> start local dev server
+- npm run build -> create production bundle
+- npm run preview -> preview built app
+- npm run lint -> run ESLint
+- npm run lint:fix -> auto-fix lint issues
+- npm run typecheck -> TypeScript/JS config type checks
+
+## Notes and current behavior
+
+- Upload handling:
+	- Text-like files are read locally.
+	- Other file types still work, but content extraction falls back to generated summaries.
+- Scene image/video generation is currently local placeholder generation (not external AI APIs).
+- Projects are browser-local. Clearing browser storage will remove project history.
+
+## Recommended next improvements
+
+- Add real AI provider integrations behind an environment-based adapter.
+- Add export/share pipeline for generated reels.
+- Add tests for the standalone client generation pipeline.
+- Add migration/versioning for localStorage schemas.
+
+## Repository structure (high level)
+
+- src/pages -> Home, Dashboard, ProjectPage
+- src/components -> UI and cinematic player components
+- src/api/standaloneClient.js -> local data + mock generation pipeline
+- src/lib -> auth wrapper, query client, utilities
+
